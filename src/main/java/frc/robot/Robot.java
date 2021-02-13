@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private PixyCam pixy;
+  private int numloops = 0;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -32,7 +34,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    System.out.println("Initizializing Pixy...");
     pixy = new PixyCam();
+    
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -49,6 +53,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -90,9 +95,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    System.out.println("Detected: " + pixy.getDetected());
-    System.out.println("Deviation X: " + pixy.getDeviationX());
-    System.out.println("Width: " + pixy.getBlockWidth());
+
   }
 
   /**
@@ -100,6 +103,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    if(++numloops != RobotConstants.PIXY_REFRESH_DIVISOR) return;
+
+    if (this.pixy.getDetected()){
+      System.out.println("Detected: " + pixy.getDetected());
+      System.out.println("Deviation X: " + pixy.getDeviationX());
+      System.out.println("Width: " + pixy.getBlockWidth());
+    } else {
+      //System.out.println("Detected: " + pixy.getDetected());
+      //System.out.println("Deviation X: " + "NOT DETECTED");
+      //System.out.println("Width: " + "NOT DETECTED");
+    }
+    numloops = 0;
   }
 
   /**
