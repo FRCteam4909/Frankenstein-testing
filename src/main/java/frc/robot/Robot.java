@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,6 +28,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private PixyCam pixy;
   private int numloops = 0;
+  public static AHRS navX;
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -36,6 +40,7 @@ public class Robot extends TimedRobot {
 
     System.out.println("Initizializing Pixy...");
     pixy = new PixyCam();
+    navX = new AHRS(SPI.Port.kMXP);
     
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -53,7 +58,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
   }
 
   /**
