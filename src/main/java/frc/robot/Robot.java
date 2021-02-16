@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.drivetrain.TurnRobot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -77,7 +78,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    System.out.println("AUTO INIT IS RUNNING");
     System.out.println("Auto selected: " + m_autoSelected);
+    CommandScheduler.getInstance().schedule(new TurnRobot(30));
   }
 
   /**
@@ -91,9 +94,9 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
       default:
-        // Put default auto code here
         break;
     }
+
   }
 
   /**
@@ -101,9 +104,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-
   }
-
   /**
    * This function is called periodically during operator control.
    */

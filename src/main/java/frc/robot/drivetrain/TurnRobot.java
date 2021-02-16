@@ -12,9 +12,11 @@ public class TurnRobot extends CommandBase{
     public double targetState;
     public PIDController turnRobot;
     public final double SPEED = 0.5; //TODO check value
+    public int numLoops = 0;
 
     public TurnRobot(double degrees){
         super();
+        System.out.println("TURN ROBOT IS CONSTUCTED");
         turnRobot = new PIDController(RobotConstants.TURN_KP, RobotConstants.TURN_KI, RobotConstants.TURN_KD);
         //TODO change the format of final constants to CAPS_AND_UNDERSCORES.
         targetState = degrees + Robot.navX.getAngle(); //Gets the abosolute position | TODO Find what get angle really means / gives back
@@ -25,21 +27,26 @@ public class TurnRobot extends CommandBase{
     public void initialize() {
         super.initialize();
         turnRobot.setSetpoint(targetState);
-        turnRobot.setTolerance(3);//TODO Test Value and figure out units
+        // turnRobot.setTolerance(3);//TODO Test Value and figure out units
+        System.out.println("TURN ROBOT IS INITILIZED");
     }
 
     @Override
     public void execute() {
         turnRobot.calculate(Robot.navX.getAngle());
-        System.out.println("PID Output: " + turnRobot.calculate(Robot.navX.getAngle()));
-        System.out.println("Current Angle: " + Robot.navX.getAngle());
         //Robot.drivetrainsubsystem.arcadeDrive(SPEED, turnRobot.calculate(Robot.navX.getAngle()))
+        if(++numLoops == 10){
+            System.out.println("Current Angle: " + Robot.navX.getAngle());
+            System.out.println("Target Angle: " + targetState);
+            System.out.println("PID Output: " + turnRobot.calculate(Robot.navX.getAngle()));
+            numLoops = 0;
+        }
     }
 
     @Override
     public boolean isFinished() {
-        if(turnRobot.atSetpoint()){ 
-            System.out.println("Error is less than 2 units");
+        if(turnRobot.getPositionError() < 3){ 
+            System.out.println("Error is less than 3 units");
             return true;
         }
         
