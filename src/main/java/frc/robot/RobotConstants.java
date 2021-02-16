@@ -8,4 +8,10 @@ public final class RobotConstants {
 
     }
 
+    //Turn PID Constants:
+    public static final double TURN_KP = 0.02;
+    public static final double TURN_KI = 0.0;
+    public static final double TURN_KD = 0.0;
+
+
 }

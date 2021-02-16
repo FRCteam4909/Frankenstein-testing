@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   public static AHRS navX;
 
 
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -42,11 +43,13 @@ public class Robot extends TimedRobot {
     pixy = new PixyCam();
     navX = new AHRS(SPI.Port.kMXP);
     
-
+    
+    
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
+  
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -58,6 +61,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
   }
 
   /**
