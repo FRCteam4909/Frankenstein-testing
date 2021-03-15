@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import java.util.Map;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,6 +31,11 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private PixyCam pixy;
   private int numloops = 0;
+
+  //Lamprey Testing
+
+  private AnalogInput lamprey;
+  private final double ANALOG_TO_DEGREES = 360/1024; 
 
   /**
    * This function is run when the robot is first started up and should be
@@ -136,6 +146,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testInit() {
+
+    lamprey = new AnalogInput(0);
+
   }
 
   /**
@@ -143,5 +156,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
+    SmartDashboard.putNumber("Lamprey Position (getValue)", lamprey.getValue() * ANALOG_TO_DEGREES);
+    SmartDashboard.putNumber("Lamprey Position (getVoltage)", lamprey.getVoltage() * ANALOG_TO_DEGREES); //use the constant above;
+
   }
 }
